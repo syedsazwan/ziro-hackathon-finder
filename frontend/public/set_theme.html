@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Set Theme</title>
+</head>
+<body>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const theme = params.get('theme') || 'light';
+    const targetView = params.get('view');
+    localStorage.setItem('ziro_theme_v1', theme);
+    window.location.replace(targetView ? '/?view=' + encodeURIComponent(targetView) : '/');
+  </script>
+</body>
+</html>

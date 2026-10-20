@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/.venv/
+venv/
+ENV/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+events.db
+**/events.db
+hackathons.db
+**/hackathons.db
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/dist-ssr/
+*.local
+
+# Environment files
+.env
+**/.env
+.env.*.local
+**/.env.*.local
+*.local
+!.env.example
+!**/.env.example
+
+# Testing, Coverage & Artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+screenshot_*.png
+/screenshot_*.png
+*.screenshot.png
+dom_*.html
+/dom_*.html
+rendered_dom.html
+/rendered_dom.html
+
+# Local browser sessions, scratch and temp directories
+chrome_profile/
+**/chrome_profile/
+tmp/
+**/tmp/
+scratch/
+**/scratch/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+

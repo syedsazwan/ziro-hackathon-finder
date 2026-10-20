@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+  <defs>
+    <linearGradient id="ziroFaviconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#ziroFaviconGrad)" />
+  <path d="M7 8.5H23.5C24.4 8.5 24.9 9.5 24.3 10.2L15.6 19.5H20.2C20.9 19.5 21.4 20.3 21 20.9L16.2 27.5C15.6 28.3 14.4 27.9 14.7 26.9L16.4 21.5H9.5C8.6 21.5 8.1 20.5 8.7 19.8L16.8 10.5H7C6.4 10.5 6 10.1 6 9.5C6 8.9 6.4 8.5 7 8.5Z" fill="#FFFFFF" />
+</svg>

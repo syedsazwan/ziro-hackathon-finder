@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ziro — Hackathon & Contest Finder | Smart Eligibility & IST Deadlines</title>
+    <meta name="description" content="Discover hackathons and coding contests matching your student profile, team size, budget, and skills with automatic IST deadline conversion and eligibility verification." />
+    <link rel="icon" type="image/svg+xml" href="/ziro-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('ziro_theme_v1');
+          if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          } else if (theme === 'light') {
+            document.documentElement.removeAttribute('data-theme');
+          } else {
+            var raw = localStorage.getItem('ziro_student_settings_v1');
+            if (raw) {
+              var parsed = JSON.parse(raw);
+              if (parsed && parsed.preferences && parsed.preferences.theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+              }
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
