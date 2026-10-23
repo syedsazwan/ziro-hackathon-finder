@@ -45,14 +45,36 @@ def get_masked_database_url(url: str | None = None) -> str:
         return "postgresql://***:***@***"
 
 
+def _normalize_origin(orig: str) -> list[str]:
+    cleaned = orig.strip().rstrip("/")
+    if not cleaned:
+        return []
+    if cleaned.startswith("http://") or cleaned.startswith("https://"):
+        return [cleaned]
+    return [f"https://{cleaned}", f"http://{cleaned}"]
+
 # Application URLs
-APP_ORIGIN = os.getenv("APP_ORIGIN", "http://localhost:5173")
-BACKEND_ORIGIN = os.getenv("BACKEND_ORIGIN", "http://127.0.0.1:8000")
+raw_app_origin = os.getenv("APP_ORIGIN", "http://localhost:5173").strip()
+if raw_app_origin and not raw_app_origin.startswith("http://") and not raw_app_origin.startswith("https://"):
+    APP_ORIGIN = f"https://{raw_app_origin.rstrip('/')}"
+else:
+    APP_ORIGIN = raw_app_origin.rstrip('/')
+
+raw_backend_origin = os.getenv("BACKEND_ORIGIN", "http://127.0.0.1:8000").strip()
+if raw_backend_origin and not raw_backend_origin.startswith("http://") and not raw_backend_origin.startswith("https://"):
+    BACKEND_ORIGIN = f"https://{raw_backend_origin.rstrip('/')}"
+else:
+    BACKEND_ORIGIN = raw_backend_origin.rstrip('/')
 
 # CORS Origins
 raw_cors = os.getenv("CORS_ORIGINS", "")
 if raw_cors.strip():
-    CORS_ORIGINS = [origin.strip() for origin in raw_cors.split(",") if origin.strip()]
+    parsed_origins: list[str] = []
+    for item in raw_cors.split(","):
+        parsed_origins.extend(_normalize_origin(item))
+    if APP_ORIGIN and APP_ORIGIN not in parsed_origins:
+        parsed_origins.append(APP_ORIGIN)
+    CORS_ORIGINS = list(dict.fromkeys(parsed_origins))
 else:
     CORS_ORIGINS = [
         "http://localhost:5173",
@@ -60,6 +82,7 @@ else:
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]
+
 
 # Google OAuth 2.0 / OpenID Connect credentials
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
