@@ -1,0 +1,83 @@
+# ==============================================================================
+# ZIRO INFRASTRUCTURE BLUEPRINT (Render Free Hosting)
+# ==============================================================================
+# Deploys:
+# 1. ziro-backend: FastAPI Web Service on Render Free Python environment
+# 2. ziro-frontend: Vite + React SPA on Render Free Static Site environment
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Backend API Service (FastAPI / Uvicorn)
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: ziro-backend
+    runtime: python
+    plan: free
+    region: ohio
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: ENVIRONMENT
+        value: production
+      - key: BACKEND_HOST
+        value: 0.0.0.0
+      # Neon PostgreSQL connection string (must be set in Render dashboard)
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET_KEY
+        generateValue: true
+      - key: SESSION_DURATION_DAYS
+        value: "7"
+      # Cross-Origin and URL configuration
+      - key: APP_ORIGIN
+        fromService:
+          type: web
+          name: ziro-frontend
+          property: host
+      - key: BACKEND_ORIGIN
+        fromService:
+          type: web
+          name: ziro-backend
+          property: host
+      - key: CORS_ORIGINS
+        fromService:
+          type: web
+          name: ziro-frontend
+          property: host
+      # Optional: Google OAuth (set manually in dashboard if enabled)
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        sync: false
+
+  # ----------------------------------------------------------------------------
+  # 2. Frontend Static Site (Vite + React Single-Page Application)
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: ziro-frontend
+    runtime: static
+    plan: free
+    region: ohio
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    autoDeploy: true
+    routes:
+      # Rewrite all frontend paths to index.html for client-side routing
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: ziro-backend
+          property: host

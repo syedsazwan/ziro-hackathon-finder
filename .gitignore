@@ -16,6 +16,10 @@ events.db
 **/events.db
 hackathons.db
 **/hackathons.db
+*.sql
+neon_migration.sql
+**/neon_migration.sql
+
 
 # Node / Frontend
 node_modules/

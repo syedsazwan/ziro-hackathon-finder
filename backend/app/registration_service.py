@@ -3,6 +3,7 @@ import uuid
 import datetime
 import sqlite3
 from typing import Optional, List, Dict, Any
+from app.database import IntegrityError
 
 from app.schemas import (
     RegistrationActionCreate,
@@ -121,7 +122,7 @@ def create_registration_action(
             created_at,
             "Simulated workflow: No external registration submitted. Demo record only.",
         ))
-    except sqlite3.IntegrityError:
+    except IntegrityError:
         # Extra safety in case of concurrent insert
         cursor.execute("""
         SELECT id, status, event_id, student_email
